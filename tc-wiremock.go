@@ -2,12 +2,15 @@ package testcontainers_wiremock
 
 import (
 	"context"
+	"strconv"
 
+	"github.com/docker/go-connections/nat"
 	"github.com/testcontainers/testcontainers-go"
 )
 
 const defaultWireMockImage = "docker.io/wiremock/wiremock"
 const defaultWireMockVersion = "2.35"
+const defaultPort = 8080
 
 type WireMockContainer struct {
 	testcontainers.Container
@@ -74,9 +77,16 @@ func WithFile(name string, filePath string) testcontainers.CustomizeRequestOptio
 
 }
 
-//func WithVersion(version string) testcontainers.CustomizeRequestOption {
-//	return func(req *testcontainers.GenericContainerRequest) {
-//		req
-//	}
-//
-//}
+func GetURI(ctx context.Context, container testcontainers.Container) (string, error) {
+	hostIP, err := container.Host(ctx)
+	if err != nil {
+		return "", err
+	}
+
+	mappedPort, err := container.MappedPort(ctx, nat.Port(strconv.Itoa(defaultPort)))
+	if err != nil {
+		return "", err
+	}
+
+	return hostIP + ":" + mappedPort.Port(), nil
+}

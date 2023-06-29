@@ -29,24 +29,36 @@ func TestWireMock(t *testing.T) {
 		}
 	})
 
-	endpoint, err := container.PortEndpoint(ctx)
+	uri, err := GetURI(ctx, container)
 	if err != nil {
-		return "", errors.Wrap(err, "unable to get container endpoint")
+		t.Error(err, "unable to get container endpoint")
 	}
 
-	c := Client(endpoint)
-	res, err := http.Get(c.url + "/upper?word=" + word)
+	out, err := SendHttpGet(uri, "/hello")
 	if err != nil {
-		return "", errors.Wrap(err, "unable to complete Get request")
-	}
-	defer res.Body.Close()
-	out, err := ioutil.ReadAll(res.Body)
-	if err != nil {
-		return "", errors.Wrap(err, "unable to read response data")
+		t.Error(err, "Failed to get a response")
 	}
 
 	if string(out) != "Hello, world!" {
 		t.Errorf("expected 'Hello, world!' but got %v", string(out))
 	}
+}
 
+func SendHttpGet(url string, endpoint string) (string, error) {
+	req, err := http.NewRequest(http.MethodGet, url+endpoint, nil)
+	if err != nil {
+		return "", errors.Wrap(err, "unable to complete Get request")
+	}
+
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return "", errors.Wrap(err, "unable to complete Get request")
+	}
+
+	out, err := ioutil.ReadAll(res.Body)
+	if err != nil {
+		return "", errors.Wrap(err, "unable to read response data")
+	}
+
+	return string(out), nil
 }
