@@ -22,13 +22,10 @@ import (
 )
 
 func TestWireMock(t *testing.T) {
-
 	ctx := context.Background()
 
 	// Create Container
-	container, err := RunContainer(ctx,
-		WithMappingFile("hello", "hello-world.json"),
-	)
+	container, err := RunContainer(ctx, WithMappingFile("hello", "hello-world.json"))
 	if err != nil {
 		t.Fatal(err)
 	}
