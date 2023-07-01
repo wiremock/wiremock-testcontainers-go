@@ -11,44 +11,47 @@ Use a custom image on the top of it, see `Dockerfile`.
 ```golang
 
 import (
-	"context"
-	"io/ioutil"
-	"net/http"
-	"testing"
+ "context"
+ "io/ioutil"
+ "net/http"
+ "testing"
 
-	_ "github.com/lib/pq"
-	"github.com/pkg/errors"
-	"github.com/oleg-nenashev/wiremock-testcontainers-go"
+ _ "github.com/lib/pq"
+ "github.com/pkg/errors"
+ "github.com/oleg-nenashev/wiremock-testcontainers-go"
 )
 
 func TestWireMock(t *testing.T) {
-	ctx := context.Background()
+ // Create Container
+ ctx := context.Background()
+ container, err := RunContainer(ctx,
+  WithMappingFile("hello", filepath.Join("testdata", "hello-world.json")),
+ )
+ if err != nil {
+  t.Fatal(err)
+ }
 
-	// Create Container
-	container, err := RunContainer(ctx, WithMappingFile("hello", "hello-world.json"))
-	if err != nil {
-		t.Fatal(err)
-	}
+ // Clean up the container after the test is complete
+ t.Cleanup(func() {
+  if err := container.Terminate(ctx); err != nil {
+   t.Fatalf("failed to terminate container: %s", err)
+  }
+ })
 
-	// Clean up the container after the test is complete
-	t.Cleanup(func() {
-		if err := container.Terminate(ctx); err != nil {
-			t.Fatalf("failed to terminate container: %s", err)
-		}
-	})
+ uri, err := GetURI(ctx, container)
+ if err != nil {
+  t.Error(err, "unable to get container endpoint")
+ }
 
-	uri, err := GetURI(ctx, container)
-	if err != nil {
-		t.Error(err, "unable to get container endpoint")
-	}
-
-	out, err := SendHttpGet(uri, "/hello")
-	if err != nil {
-		t.Error(err, "Failed to get a response")
-	}
-
-	if string(out) != "Hello, world!" {
-		t.Errorf("expected 'Hello, world!' but got %v", string(out))
-	}
+ statusCode, out, err := SendHttpGet(uri, "/hello")
+ if err != nil {
+  t.Error(err, "Failed to get a response")
+ }
+ if statusCode != 200 {
+  t.Errorf("expected HTTP-200 but got %d", statusCode)
+ }
+ if string(out) != "Hello, world!" {
+  t.Errorf("expected 'Hello, world!' but got %v", string(out))
+ }
 }
 ```
