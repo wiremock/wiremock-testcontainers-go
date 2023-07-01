@@ -31,7 +31,7 @@ import (
 
  _ "github.com/lib/pq"
  "github.com/pkg/errors"
- "github.com/oleg-nenashev/wiremock-testcontainers-go"
+ "github.com/wiremock/wiremock-testcontainers-go"
 )
 
 func TestWireMock(t *testing.T) {
