@@ -30,19 +30,18 @@ func TestWireMock(t *testing.T) {
 
 	uri, err := GetURI(ctx, container)
 	if err != nil {
-		t.Error(err, "unable to get container endpoint")
+		t.Fatal(err, "unable to get container endpoint")
 	}
 
 	statusCode, out, err := SendHttpGet(uri, "/hello")
 	if err != nil {
-		t.Error(err, "Failed to get a response")
+		t.Fatal(err, "Failed to get a response")
 	}
-
 	if statusCode != 200 {
-		t.Errorf("expected HTTP-200 but got %d", statusCode)
+		t.Fatalf("expected HTTP-200 but got %d", statusCode)
 	}
 	if string(out) != "Hello, world!" {
-		t.Errorf("expected 'Hello, world!' but got %v", string(out))
+		t.Fatalf("expected 'Hello, world!' but got %v", string(out))
 	}
 }
 
