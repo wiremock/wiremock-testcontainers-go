@@ -16,6 +16,9 @@ jobs:
       with:
         go-version: 1.19
 
+    - name: Build image
+      run: make docker
+
     - name: Build
       run: go build -v ./...
 
