@@ -76,7 +76,12 @@ func WithFile(name string, filePath string) testcontainers.CustomizeRequestOptio
 
 		req.Files = append(req.Files, cfgFile)
 	}
+}
 
+func WithImage(image string) testcontainers.CustomizeRequestOption {
+	return func(req *testcontainers.GenericContainerRequest) {
+		req.Image = image
+	}
 }
 
 func GetURI(ctx context.Context, container testcontainers.Container) (string, error) {
