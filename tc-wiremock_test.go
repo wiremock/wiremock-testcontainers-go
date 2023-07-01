@@ -4,6 +4,7 @@ import (
 	"context"
 	"io/ioutil"
 	"net/http"
+	"path/filepath"
 	"testing"
 
 	_ "github.com/lib/pq"
@@ -11,12 +12,10 @@ import (
 )
 
 func TestWireMock(t *testing.T) {
-
-	ctx := context.Background()
-
 	// Create Container
+	ctx := context.Background()
 	container, err := RunContainer(ctx,
-		WithMappingFile("hello", "hello-world.json"),
+		WithMappingFile("hello", filepath.Join("testdata", "hello-world.json")),
 	)
 	if err != nil {
 		t.Fatal(err)
@@ -34,31 +33,34 @@ func TestWireMock(t *testing.T) {
 		t.Error(err, "unable to get container endpoint")
 	}
 
-	out, err := SendHttpGet(uri, "/hello")
+	statusCode, out, err := SendHttpGet(uri, "/hello")
 	if err != nil {
 		t.Error(err, "Failed to get a response")
 	}
 
+	if statusCode != 200 {
+		t.Errorf("expected HTTP-200 but got %d", statusCode)
+	}
 	if string(out) != "Hello, world!" {
 		t.Errorf("expected 'Hello, world!' but got %v", string(out))
 	}
 }
 
-func SendHttpGet(url string, endpoint string) (string, error) {
+func SendHttpGet(url string, endpoint string) (int, string, error) {
 	req, err := http.NewRequest(http.MethodGet, url+endpoint, nil)
 	if err != nil {
-		return "", errors.Wrap(err, "unable to complete Get request")
+		return -1, "", errors.Wrap(err, "unable to complete Get request")
 	}
 
 	res, err := http.DefaultClient.Do(req)
 	if err != nil {
-		return "", errors.Wrap(err, "unable to complete Get request")
+		return -1, "", errors.Wrap(err, "unable to complete Get request")
 	}
 
 	out, err := ioutil.ReadAll(res.Body)
 	if err != nil {
-		return "", errors.Wrap(err, "unable to read response data")
+		return -1, "", errors.Wrap(err, "unable to read response data")
 	}
 
-	return string(out), nil
+	return res.StatusCode, string(out), nil
 }

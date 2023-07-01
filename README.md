@@ -1,5 +1,11 @@
 # WireMock Module for Testcontainers Go
 
+## Note
+
+The Testcontainers module does not work with the official image at the moment,
+because the Mappings and Files directories are not initialized there.
+Use a custom image on the top of it, see `Dockerfile`.
+
 ## Usage
 
 ```golang
@@ -12,7 +18,7 @@ import (
 
 	_ "github.com/lib/pq"
 	"github.com/pkg/errors"
-	"github.com/oleg-nenashev/wireomck-testcontainers-go"
+	"github.com/oleg-nenashev/wiremock-testcontainers-go"
 )
 
 func TestWireMock(t *testing.T) {

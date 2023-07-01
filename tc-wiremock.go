@@ -2,14 +2,16 @@ package testcontainers_wiremock
 
 import (
 	"context"
+	"path/filepath"
 	"strconv"
 
 	"github.com/docker/go-connections/nat"
 	"github.com/testcontainers/testcontainers-go"
+	"github.com/testcontainers/testcontainers-go/wait"
 )
 
 const defaultWireMockImage = "docker.io/wiremock/wiremock"
-const defaultWireMockVersion = "2.35"
+const defaultWireMockVersion = "2.35.0-for-tc"
 const defaultPort = 8080
 
 type WireMockContainer struct {
@@ -30,6 +32,7 @@ func RunContainer(ctx context.Context, opts ...testcontainers.ContainerCustomize
 		Image:        defaultWireMockImage + ":" + defaultWireMockVersion,
 		ExposedPorts: []string{"8080/tcp"},
 		Cmd:          []string{""},
+		WaitingFor:   wait.ForHTTP("/__admin").WithPort(nat.Port("8080")),
 	}
 
 	genericContainerReq := testcontainers.GenericContainerRequest{
@@ -55,7 +58,7 @@ func WithMappingFile(id string, filePath string) testcontainers.CustomizeRequest
 	return func(req *testcontainers.GenericContainerRequest) {
 		cfgFile := testcontainers.ContainerFile{
 			HostFilePath:      filePath,
-			ContainerFilePath: "/home/wiremock/mappings/" + id + ".json",
+			ContainerFilePath: filepath.Join("/home/wiremock/mappings", id+".json"),
 			FileMode:          0755,
 		}
 
@@ -88,5 +91,5 @@ func GetURI(ctx context.Context, container testcontainers.Container) (string, er
 		return "", err
 	}
 
-	return hostIP + ":" + mappedPort.Port(), nil
+	return "http://" + hostIP + ":" + mappedPort.Port(), nil
 }
