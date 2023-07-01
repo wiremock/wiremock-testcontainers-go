@@ -1,10 +1,23 @@
 # WireMock Module for Testcontainers Go
 
+[![GitHub release (latest by date)](https://img.shields.io/github/v/release/wiremock/wiremock-testcontainers-go)](https://github.com/wiremock/wiremock-testcontainers-go/releases)
+[![Slack](https://img.shields.io/badge/slack-slack.wiremock.org-brightgreen?style=flat&logo=slack)](https://slack.wiremock.org/)
+[![GitHub contributors](https://img.shields.io/github/contributors/wiremock/wiremock-testcontainers-go)](https://github.com/wiremock/wiremock-testcontainers-go/graphs/contributors)
+
 ## Note
 
 The Testcontainers module does not work with the official image at the moment,
 because the Mappings and Files directories are not initialized there.
 Use a custom image on the top of it, see `Dockerfile`.
+
+## Supported features
+
+The following features are now explicitly included in the module's API:
+
+- Passing API Mapping files
+- Passing Resource files
+
+More features will be added over time.
 
 ## Usage
 
@@ -55,3 +68,7 @@ func TestWireMock(t *testing.T) {
  }
 }
 ```
+
+## License
+
+The module is licensed under [Apache License v.2](./LICENSE)
