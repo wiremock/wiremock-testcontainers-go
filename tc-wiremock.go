@@ -70,7 +70,7 @@ func WithFile(name string, filePath string) testcontainers.CustomizeRequestOptio
 	return func(req *testcontainers.GenericContainerRequest) {
 		cfgFile := testcontainers.ContainerFile{
 			HostFilePath:      filePath,
-			ContainerFilePath: "/home/wiremock/__files/",
+			ContainerFilePath: "/home/wiremock/__files/" + name,
 			FileMode:          0755,
 		}
 

@@ -5,6 +5,7 @@ import (
 	"io/ioutil"
 	"net/http"
 	"path/filepath"
+	"strings"
 	"testing"
 
 	_ "github.com/lib/pq"
@@ -41,6 +42,41 @@ func TestWireMock(t *testing.T) {
 		t.Fatalf("expected HTTP-200 but got %d", statusCode)
 	}
 	if string(out) != "Hello, world!" {
+		t.Fatalf("expected 'Hello, world!' but got %v", string(out))
+	}
+}
+
+func TestWireMockWithResource(t *testing.T) {
+	// Create Container
+	ctx := context.Background()
+	container, err := RunContainer(ctx,
+		WithMappingFile("hello", filepath.Join("testdata", "hello-world-resource.json")),
+		WithFile("hello-world-resource-response.xml", filepath.Join("testdata", "hello-world-resource-response.xml")),
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Clean up the container after the test is complete
+	t.Cleanup(func() {
+		if err := container.Terminate(ctx); err != nil {
+			t.Fatalf("failed to terminate container: %s", err)
+		}
+	})
+
+	uri, err := GetURI(ctx, container)
+	if err != nil {
+		t.Fatal(err, "unable to get container endpoint")
+	}
+
+	statusCode, out, err := SendHttpGet(uri, "/hello-from-file")
+	if err != nil {
+		t.Fatal(err, "Failed to get a response")
+	}
+	if statusCode != 200 {
+		t.Fatalf("expected HTTP-200 but got %d", statusCode)
+	}
+	if !strings.Contains(out, "Hello, world!") {
 		t.Fatalf("expected 'Hello, world!' but got %v", string(out))
 	}
 }
