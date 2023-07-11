@@ -25,7 +25,6 @@ More features will be added over time.
 
 import (
  "context"
- "io/ioutil"
  "net/http"
  "testing"
 

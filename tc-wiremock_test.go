@@ -2,7 +2,7 @@ package testcontainers_wiremock
 
 import (
 	"context"
-	"io/ioutil"
+	"io"
 	"net/http"
 	"path/filepath"
 	"strings"
@@ -91,7 +91,7 @@ func SendHttpGet(url string, endpoint string) (int, string, error) {
 		return -1, "", errors.Wrap(err, "unable to complete Get request")
 	}
 
-	out, err := ioutil.ReadAll(res.Body)
+	out, err := io.ReadAll(res.Body)
 	if err != nil {
 		return -1, "", errors.Wrap(err, "unable to read response data")
 	}
