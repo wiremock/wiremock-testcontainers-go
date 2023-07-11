@@ -29,7 +29,6 @@ import (
  "net/http"
  "testing"
 
- _ "github.com/lib/pq"
  "github.com/pkg/errors"
  "github.com/wiremock/wiremock-testcontainers-go"
 )
