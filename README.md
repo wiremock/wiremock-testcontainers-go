@@ -25,11 +25,9 @@ More features will be added over time.
 
 import (
  "context"
- "io/ioutil"
  "net/http"
  "testing"
 
- _ "github.com/lib/pq"
  "github.com/pkg/errors"
  "github.com/wiremock/wiremock-testcontainers-go"
 )
