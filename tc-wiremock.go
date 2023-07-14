@@ -10,7 +10,7 @@ import (
 )
 
 const defaultWireMockImage = "docker.io/wiremock/wiremock"
-const defaultWireMockVersion = "2.35.0-for-tc"
+const defaultWireMockVersion = "2.35.0-1"
 const defaultPort = "8080"
 
 type WireMockContainer struct {
