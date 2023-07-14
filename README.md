@@ -4,11 +4,9 @@
 [![Slack](https://img.shields.io/badge/slack-slack.wiremock.org-brightgreen?style=flat&logo=slack)](https://slack.wiremock.org/)
 [![GitHub contributors](https://img.shields.io/github/contributors/wiremock/wiremock-testcontainers-go)](https://github.com/wiremock/wiremock-testcontainers-go/graphs/contributors)
 
-## Note
-
-The Testcontainers module does not work with the official image at the moment,
-because the Mappings and Files directories are not initialized there.
-Use a custom image on the top of it, see `Dockerfile`.
+This module allows provisioning the WireMock server as a standalone container within your unit tests,
+based on [WireMock Docker](https://github.com/wiremock/wiremock-docker) `2.35.0-1` or above.
+Custom images are supported too as long as they follow the same CLI and API structure.
 
 ## Supported features
 
