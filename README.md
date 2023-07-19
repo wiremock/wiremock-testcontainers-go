@@ -1,5 +1,6 @@
 # WireMock Module for Testcontainers Go
 
+[![GoDoc](https://godoc.org/github.com/wiremock/wiremock-testcontainers-go?status.svg)](http://godoc.org/github.com/wiremock/wiremock-testcontainers-go)
 [![GitHub release (latest by date)](https://img.shields.io/github/v/release/wiremock/wiremock-testcontainers-go)](https://github.com/wiremock/wiremock-testcontainers-go/releases)
 [![Slack](https://img.shields.io/badge/slack-slack.wiremock.org-brightgreen?style=flat&logo=slack)](https://slack.wiremock.org/)
 [![GitHub contributors](https://img.shields.io/github/contributors/wiremock/wiremock-testcontainers-go)](https://github.com/wiremock/wiremock-testcontainers-go/graphs/contributors)
