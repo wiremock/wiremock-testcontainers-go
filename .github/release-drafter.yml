@@ -1,2 +1,4 @@
 # Use https://github.com/wiremock/.github/blob/main/.github/release_drafter.yml
 _extends: .github
+name-template: Version $NEXT_MINOR_VERSION
+tag-template: v$NEXT_MINOR_VERSION
