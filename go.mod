@@ -1,4 +1,4 @@
-module example.com/m/v2
+module module github.com/wiremock/wiremock-testcontainers-go
 
 go 1.19
 
