@@ -36,8 +36,9 @@ jobs:
     runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v3
+      with:
+        ref: ${{ github.ref_name }}
     - name: Publish doc to go.dev packages
       run: |
-        git pull
         export latest="$(git describe --tags `git rev-list --tags --max-count=1`)"
         curl https://proxy.golang.org/github.com/wiremock/wiremock-testcontainers-go/@v/$latest.info
