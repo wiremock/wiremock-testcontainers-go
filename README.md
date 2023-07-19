@@ -4,9 +4,11 @@
 [![Slack](https://img.shields.io/badge/slack-slack.wiremock.org-brightgreen?style=flat&logo=slack)](https://slack.wiremock.org/)
 [![GitHub contributors](https://img.shields.io/github/contributors/wiremock/wiremock-testcontainers-go)](https://github.com/wiremock/wiremock-testcontainers-go/graphs/contributors)
 
-This module allows provisioning the WireMock server as a standalone container within your unit tests,
+This module allows provisioning the [WireMock API mock server](https://wiremock.org/) as a standalone container within your unit tests,
 based on [WireMock Docker](https://github.com/wiremock/wiremock-docker) `2.35.0-1` or above.
 Custom images are supported too as long as they follow the same CLI and API structure.
+
+You can learn more about WireMock and Golang on this [WireMock solutions page](https://wiremock.org/docs/solutions/golang/).
 
 ## Supported features
 
@@ -68,3 +70,10 @@ func TestWireMock(t *testing.T) {
 ## License
 
 The module is licensed under [Apache License v.2](./LICENSE)
+
+## References
+
+- [WireMock Website](https://wiremock.org/)
+- [WireMock and GOlang Solutions page](https://wiremock.org/docs/solutions/golang/)
+- [Testcontainers for Go](https://golang.testcontainers.org/)
+- [WireMock Module page on the Testcontainers marketplace](https://testcontainers.com/modules/wiremock/)
