@@ -30,3 +30,14 @@ jobs:
         goversion: "https://dl.google.com/go/go1.20.5.linux-amd64.tar.gz"
         binary_name: "test-binary"
         extra_files: LICENSE README.md
+  
+  update-docs:
+    name: Update the go.dev package
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v3
+    - name: Publish doc to go.dev packages
+      run: |
+        git pull
+        export latest="$(git describe --tags `git rev-list --tags --max-count=1`)"
+        curl https://proxy.golang.org/github.com/wiremock/wiremock-testcontainers-go/@v/$latest.info
