@@ -1,4 +1,4 @@
-module module github.com/wiremock/wiremock-testcontainers-go
+module github.com/wiremock/wiremock-testcontainers-go
 
 go 1.19
 
