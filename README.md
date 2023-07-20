@@ -6,8 +6,7 @@
 [![GitHub contributors](https://img.shields.io/github/contributors/wiremock/wiremock-testcontainers-go)](https://github.com/wiremock/wiremock-testcontainers-go/graphs/contributors)
 
 This module allows provisioning the [WireMock API mock server](https://wiremock.org/) as a standalone container within your unit tests,
-based on [WireMock Docker](https://github.com/wiremock/wiremock-docker) `2.35.0-1` or above.
-Custom images are supported too as long as they follow the same CLI and API structure.
+based on the official [WireMock Docker](https://github.com/wiremock/wiremock-docker) images (`2.35.0-1` or above) or compatible custom images.
 
 You can learn more about WireMock and Golang on this [WireMock solutions page](https://wiremock.org/docs/solutions/golang/).
 
@@ -20,17 +19,30 @@ The following features are now explicitly included in the module's API:
 
 More features will be added over time.
 
+## Quick Start
+
+See the [Quick Start Guide](./docs/quickstart.md).
+Just a teaser of how it feels at the real speed!
+
+![Quickstart demo GIF](./docs/images/quickstart.gif)
+
+## Requirements
+
+- Golang version 1.17 or above, so all modern Golang projects should be compatible with it.
+- The module supports the official [WireMock Docker](https://github.com/wiremock/wiremock-docker) images 2.35.0-1 or above.
+- Custom images are supported too as long as they follow the same CLI and API structure.
+
 ## Usage
 
 ```golang
-
 import (
  "context"
- "net/http"
- "testing"
-
  "github.com/pkg/errors"
- "github.com/wiremock/wiremock-testcontainers-go"
+ . "github.com/wiremock/wiremock-testcontainers-go"
+ "io"
+ http "net/http"
+ "path/filepath"
+ "testing"
 )
 
 func TestWireMock(t *testing.T) {
@@ -50,15 +62,17 @@ func TestWireMock(t *testing.T) {
   }
  })
 
+ // Send the HTTP GET request
  uri, err := GetURI(ctx, container)
  if err != nil {
   t.Fatal(err, "unable to get container endpoint")
  }
-
  statusCode, out, err := SendHttpGet(uri, "/hello")
  if err != nil {
   t.Fatal(err, "Failed to get a response")
  }
+
+ // Verify the response
  if statusCode != 200 {
   t.Fatalf("expected HTTP-200 but got %d", statusCode)
  }
