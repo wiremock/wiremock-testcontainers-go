@@ -2,9 +2,9 @@
 
 If you have the Golang development environment ready to go and do not want a step by step guide,
 you can just clone the project’s repository in
-[wiremock/wiremock-testcontainers-go`](https://github.com/wiremock/wiremock-testcontainers-go),
+[`wiremock/wiremock-testcontainers-go`](https://github.com/wiremock/wiremock-testcontainers-go),
 go to the `examples/quickstart` directory
-and run `go build` and then `go test` in the root or try the examples].
+and run `go build` and then `go test` in the root or try the [examples](https://github.com/wiremock/wiremock-testcontainers-go/blob/main/examples/quickstart/quickstart_test.go).
 Any pull requests will be welcome ;-)
 
 ## Pre-requisites
