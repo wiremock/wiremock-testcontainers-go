@@ -3,7 +3,6 @@ module wiremock.org/testcontainers-go-quickstart
 go 1.19
 
 require (
-	github.com/pkg/errors v0.9.1
 	github.com/wiremock/wiremock-testcontainers-go v1.0.0-alpha-4
 )
 
@@ -39,3 +38,5 @@ require (
 	google.golang.org/grpc v1.47.0 // indirect
 	google.golang.org/protobuf v1.28.0 // indirect
 )
+
+replace github.com/wiremock/wiremock-testcontainers-go => ../../../wiremock-testcontainers-go // needed to use new method written localy in the quickstart_test.go

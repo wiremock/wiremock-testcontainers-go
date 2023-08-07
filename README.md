@@ -16,6 +16,7 @@ The following features are now explicitly included in the module's API:
 
 - Passing API Mapping files
 - Passing Resource files
+- Sending HTTP requests to the mocked container
 
 More features will be added over time.
 
@@ -36,49 +37,42 @@ Just a teaser of how it feels at the real speed!
 
 ```golang
 import (
- "context"
- "github.com/pkg/errors"
- . "github.com/wiremock/wiremock-testcontainers-go"
- "io"
- http "net/http"
- "path/filepath"
- "testing"
+  "context"
+  . "github.com/wiremock/wiremock-testcontainers-go"
+  "testing"
 )
 
 func TestWireMock(t *testing.T) {
- // Create Container
- ctx := context.Background()
- container, err := RunContainer(ctx,
-  WithMappingFile("hello", filepath.Join("testdata", "hello-world.json")),
- )
- if err != nil {
-  t.Fatal(err)
- }
+	// Create Container
+	ctx := context.Background()
+	container, err := RunContainer(ctx,
+		WithMappingFile("hello", "hello-world.json"),
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
 
- // Clean up the container after the test is complete
- t.Cleanup(func() {
-  if err := container.Terminate(ctx); err != nil {
-   t.Fatalf("failed to terminate container: %s", err)
-  }
- })
+	// Clean up the container after the test is complete
+	t.Cleanup(func() {
+		if err := container.Terminate(ctx); err != nil {
+			t.Fatalf("failed to terminate container: %s", err)
+		}
+	})
 
- // Send the HTTP GET request
- uri, err := GetURI(ctx, container)
- if err != nil {
-  t.Fatal(err, "unable to get container endpoint")
- }
- statusCode, out, err := SendHttpGet(uri, "/hello")
- if err != nil {
-  t.Fatal(err, "Failed to get a response")
- }
+	// Send the HTTP GET request to the mocked API
+	statusCode, out, err := SendHttpGet(container, "/hello", nil)
+	if err != nil {
+		t.Fatal(err, "Failed to get a response")
+	}
 
- // Verify the response
- if statusCode != 200 {
-  t.Fatalf("expected HTTP-200 but got %d", statusCode)
- }
- if string(out) != "Hello, world!" {
-  t.Fatalf("expected 'Hello, world!' but got %v", string(out))
- }
+	// Verify the response
+	if statusCode != 200 {
+		t.Fatalf("expected HTTP-200 but got %d", statusCode)
+	}
+
+	if string(out) != "Hello, world!" {
+		t.Fatalf("expected 'Hello, world!' but got %v", string(out))
+	}
 }
 ```
 
