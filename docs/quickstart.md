@@ -5,7 +5,7 @@ you can just clone the project’s repository in
 [`wiremock/wiremock-testcontainers-go`](https://github.com/wiremock/wiremock-testcontainers-go),
 go to the `examples/quickstart` directory
 and run `go build` and then `go test` in the root or try the [examples](https://github.com/wiremock/wiremock-testcontainers-go/blob/main/examples/quickstart/quickstart_test.go).
-Any pull requests will be welcome ;-)
+Any pull requests will be welcome!
 
 ## Pre-requisites
 
@@ -23,7 +23,7 @@ go 1.19
 
 require (
     github.com/pkg/errors v0.9.1
-    github.com/wiremock/wiremock-testcontainers-go v1.0.0-alpha-4
+    github.com/wiremock/wiremock-testcontainers-go v1.0.0-alpha-5
 )
 ```
 

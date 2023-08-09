@@ -3,7 +3,7 @@ module wiremock.org/testcontainers-go-quickstart
 go 1.19
 
 require (
-	github.com/wiremock/wiremock-testcontainers-go v1.0.0-alpha-4
+	github.com/wiremock/wiremock-testcontainers-go v1.0.0-alpha-6
 )
 
 require (
