@@ -9,6 +9,11 @@ on:
 jobs:
   update_release_draft:
     runs-on: ubuntu-latest
+    permissions:
+      # Write permission is required to create a github release
+      contents: write
+      # Write permission is required for autolabeler
+      pull-requests: write
     steps:
       - uses: release-drafter/release-drafter@v5
         with:
