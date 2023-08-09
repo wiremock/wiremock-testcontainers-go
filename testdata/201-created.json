@@ -1,0 +1,11 @@
+{
+  "request": {
+    "method": "POST",
+    "url": "/create"
+  },
+
+  "response": {
+    "status": 201,
+    "bodyFileName": "sample-model.json"
+  }
+}

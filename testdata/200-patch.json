@@ -1,0 +1,11 @@
+{
+  "request": {
+    "method": "PATCH",
+    "url": "/patch"
+  },
+
+  "response": {
+    "status": 200,
+    "bodyFileName": "sample-model.json"
+  }
+}

@@ -2,6 +2,9 @@ package testcontainers_wiremock
 
 import (
 	"context"
+	"io"
+	"net/http"
+	"net/url"
 	"path/filepath"
 
 	"github.com/docker/go-connections/nat"
@@ -25,7 +28,7 @@ type WireMockExtension struct {
 	jarPath   string
 }
 
-// RunContainer creates an instance of the postgres container type
+// RunContainer creates an instance of the WireMockContainer type
 func RunContainer(ctx context.Context, opts ...testcontainers.ContainerCustomizer) (*WireMockContainer, error) {
 	req := testcontainers.ContainerRequest{
 		Image:        defaultWireMockImage + ":" + defaultWireMockVersion,
@@ -96,4 +99,84 @@ func GetURI(ctx context.Context, container testcontainers.Container) (string, er
 	}
 
 	return "http://" + hostIP + ":" + mappedPort.Port(), nil
+}
+
+// SendHttpGet sends Http GET request to the container passed as an argument.
+// 'queryParams' parameter is optional and can be passed as a nil. Query parameters also work when hardcoded in the endpoint argument.
+func SendHttpGet(container testcontainers.Container, endpoint string, queryParams map[string]string) (int, string, error) {
+	if queryParams != nil {
+		var err error
+		endpoint, err = addQueryParamsToURL(endpoint, queryParams)
+		if err != nil {
+			return -1, "", err
+		}
+	}
+
+	return sendHttpRequest(http.MethodGet, container, endpoint, nil)
+}
+
+// SendHttpDelete sends Http DELETE request to the container passed as an argument.
+func SendHttpDelete(container testcontainers.Container, endpoint string) (int, string, error) {
+	return sendHttpRequest(http.MethodDelete, container, endpoint, nil)
+}
+
+// SendHttpPost sends Http POST request to the container passed as an argument.
+func SendHttpPost(container testcontainers.Container, endpoint string, body io.Reader) (int, string, error) {
+	return sendHttpRequest(http.MethodPost, container, endpoint, body)
+}
+
+// SendHttpPatch sends Http PATCH request to the container passed as an argument.
+func SendHttpPatch(container testcontainers.Container, endpoint string, body io.Reader) (int, string, error) {
+	return sendHttpRequest(http.MethodPatch, container, endpoint, body)
+}
+
+// SendHttpPut sends Http PUT request to the container passed as an argument.
+func SendHttpPut(container testcontainers.Container, endpoint string, body io.Reader) (int, string, error) {
+	return sendHttpRequest(http.MethodPut, container, endpoint, body)
+}
+
+func sendHttpRequest(httpMethod string, container testcontainers.Container, endpoint string, body io.Reader) (int, string, error) {
+	ctx := context.Background()
+
+	uri, err := GetURI(ctx, container)
+	if err != nil {
+		return -1, "", err
+	}
+
+	req, err := http.NewRequest(httpMethod, uri+endpoint, body)
+	if err != nil {
+		return -1, "", err
+	}
+
+	res, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return -1, "", err
+	}
+
+	out, err := io.ReadAll(res.Body)
+	if err != nil {
+		return -1, "", err
+	}
+
+	return res.StatusCode, string(out), nil
+}
+
+func addQueryParamsToURL(endpoint string, queryParams map[string]string) (string, error) {
+	parsedURL, err := url.Parse(endpoint)
+	if err != nil {
+		return "", err
+	}
+
+	existingQueryParams, err := url.ParseQuery(parsedURL.RawQuery)
+	if err != nil {
+		return "", err
+	}
+
+	for key, value := range queryParams {
+		existingQueryParams.Set(key, value)
+	}
+
+	parsedURL.RawQuery = existingQueryParams.Encode()
+
+	return parsedURL.String(), nil
 }

@@ -1,0 +1,11 @@
+{
+  "request": {
+    "method": "PUT",
+    "url": "/put"
+  },
+
+  "response": {
+    "status": 200,
+    "bodyFileName": "sample-model.json"
+  }
+}
