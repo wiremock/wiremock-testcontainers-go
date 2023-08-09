@@ -98,8 +98,8 @@ To do so, we will use a build-in method:
 func TestWireMock(t *testing.T) {
     // ... Previous initialization code
 
-	// Send a simple HTTP GET request to the mocked API
-	statusCode, out, err := SendHttpGet(container, "/hello", nil)
+    // Send a simple HTTP GET request to the mocked API
+    statusCode, out, err := SendHttpGet(container, "/hello", nil)
     if err != nil {
         t.Fatal(err, "Failed to get a response")
     }
