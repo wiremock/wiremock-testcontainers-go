@@ -5,7 +5,7 @@ go 1.19
 require (
 	github.com/docker/go-connections v0.4.0
 	github.com/testcontainers/testcontainers-go v0.22.0
-
+	github.com/wiremock/go-wiremock v1.7.1
 )
 
 require (
