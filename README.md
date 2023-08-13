@@ -83,6 +83,6 @@ The module is licensed under [Apache License v.2](./LICENSE)
 ## References
 
 - [WireMock Website](https://wiremock.org/)
-- [WireMock and GOlang Solutions page](https://wiremock.org/docs/solutions/golang/)
+- [WireMock and Golang Solutions page](https://wiremock.org/docs/solutions/golang/)
 - [Testcontainers for Go](https://golang.testcontainers.org/)
 - [WireMock Module page on the Testcontainers marketplace](https://testcontainers.com/modules/wiremock/)
