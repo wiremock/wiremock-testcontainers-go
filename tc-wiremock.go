@@ -182,9 +182,9 @@ func addQueryParamsToURL(endpoint string, queryParams map[string]string) (string
 	return parsedURL.String(), nil
 }
 
-func RunContainerAndStopOnCleanup(ctx context.Context, t *testing.T, mappingFileName string) (testcontainers.Container, error) {
+func RunContainerAndStopOnCleanup(ctx context.Context, t *testing.T, id string, mappingFileName string) (testcontainers.Container, error) {
 	container, err := RunContainer(ctx,
-		WithMappingFile("hello", mappingFileName),
+		WithMappingFile(id, mappingFileName),
 	)
 	if err != nil {
 		t.Fatal(err)
