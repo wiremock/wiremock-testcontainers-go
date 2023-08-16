@@ -2,8 +2,9 @@ package testcontainers_wiremock_quickstart
 
 import (
 	"context"
-	. "github.com/wiremock/wiremock-testcontainers-go"
 	"testing"
+
+	. "github.com/wiremock/wiremock-testcontainers-go"
 )
 
 func TestWireMock(t *testing.T) {
@@ -35,6 +36,6 @@ func TestWireMock(t *testing.T) {
 	}
 
 	if string(out) != "Hello, world!" {
-		t.Fatalf("expected 'Hello, world!' but got %v", string(out))
+		t.Fatalf("expected 'Hello, world!' but got %s", out)
 	}
 }

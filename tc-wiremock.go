@@ -10,6 +10,7 @@ import (
 	"github.com/docker/go-connections/nat"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
+	"github.com/wiremock/go-wiremock"
 )
 
 const defaultWireMockImage = "docker.io/wiremock/wiremock"
@@ -19,6 +20,7 @@ const defaultPort = "8080"
 type WireMockContainer struct {
 	testcontainers.Container
 	version string
+	Client  *wiremock.Client
 }
 
 type WireMockExtension struct {
@@ -53,7 +55,15 @@ func RunContainer(ctx context.Context, opts ...testcontainers.ContainerCustomize
 		return nil, err
 	}
 
-	return &WireMockContainer{Container: container}, nil
+	uri, err := GetURI(ctx, container)
+	if err != nil {
+		return nil, err
+	}
+
+	return &WireMockContainer{
+		Container: container,
+		Client:    wiremock.NewClient(uri),
+	}, nil
 }
 
 func WithMappingFile(id string, filePath string) testcontainers.CustomizeRequestOption {

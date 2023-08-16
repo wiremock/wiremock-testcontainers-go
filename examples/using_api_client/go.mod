@@ -2,7 +2,10 @@ module wiremock.org/testcontainers-go-quickstart
 
 go 1.19
 
-require github.com/wiremock/wiremock-testcontainers-go v1.0.0-alpha-6
+require (
+	github.com/wiremock/go-wiremock v1.7.1
+	github.com/wiremock/wiremock-testcontainers-go v1.0.0-alpha-6
+)
 
 require (
 	dario.cat/mergo v1.0.0 // indirect
@@ -30,7 +33,6 @@ require (
 	github.com/pkg/errors v0.9.1 // indirect
 	github.com/sirupsen/logrus v1.9.0 // indirect
 	github.com/testcontainers/testcontainers-go v0.22.0 // indirect
-	github.com/wiremock/go-wiremock v1.7.1 // indirect
 	golang.org/x/exp v0.0.0-20230510235704-dd950f8aeaea // indirect
 	golang.org/x/mod v0.9.0 // indirect
 	golang.org/x/net v0.9.0 // indirect
