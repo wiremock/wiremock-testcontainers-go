@@ -5,10 +5,10 @@
 [![Slack](https://img.shields.io/badge/slack-slack.wiremock.org-brightgreen?style=flat&logo=slack)](https://slack.wiremock.org/)
 [![GitHub contributors](https://img.shields.io/github/contributors/wiremock/wiremock-testcontainers-go)](https://github.com/wiremock/wiremock-testcontainers-go/graphs/contributors)
 
-This module allows provisioning the [WireMock API mock server](https://wiremock.org/) as a standalone container within your unit tests,
+This module allows provisioning the [WireMock API mock server](https://wiremock.org/?utm_medium=referral&utm_campaign=wiremock-testcontainers) as a standalone container within your unit tests,
 based on the official [WireMock Docker](https://github.com/wiremock/wiremock-docker) images (`2.35.0-1` or above) or compatible custom images.
 
-You can learn more about WireMock and Golang on this [WireMock solutions page](https://wiremock.org/docs/solutions/golang/).
+You can learn more about WireMock and Golang on this [WireMock solutions page](https://wiremock.org/docs/solutions/golang/?utm_medium=referral&utm_campaign=wiremock-testcontainers).
 
 ## Supported features
 
@@ -81,7 +81,7 @@ The module is licensed under [Apache License v.2](./LICENSE)
 
 ## References
 
-- [WireMock Website](https://wiremock.org/)
-- [WireMock and Golang Solutions page](https://wiremock.org/docs/solutions/golang/)
+- [WireMock Website](https://wiremock.org/?utm_medium=referral&utm_campaign=wiremock-testcontainers)
+- [WireMock and Golang Solutions page](https://wiremock.org/docs/solutions/golang/?utm_medium=referral&utm_campaign=wiremock-testcontainers)
 - [Testcontainers for Go](https://golang.testcontainers.org/)
 - [WireMock Module page on the Testcontainers marketplace](https://testcontainers.com/modules/wiremock/)
