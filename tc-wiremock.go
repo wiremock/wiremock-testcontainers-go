@@ -67,6 +67,29 @@ func RunContainer(ctx context.Context, opts ...testcontainers.ContainerCustomize
 	}, nil
 }
 
+// Creates an instance of the WireMockContainer type that is automatically terminated upon test completion
+func RunContainerAndStopOnCleanup(ctx context.Context, t *testing.T, opts ...testcontainers.ContainerCustomizer) (*WireMockContainer, error) {
+	container, err := RunContainer(ctx, opts...)
+	if err != nil {
+		t.Fatal(err)
+		return nil, err
+	}
+
+	t.Cleanup(func() {
+		if err := container.Terminate(ctx); err != nil {
+			t.Fatalf("failed to terminate container: %s", err)
+		}
+	})
+
+	return container, nil
+}
+
+// Creates a default instance of the WireMockContainer type that is automatically terminated upon test completion
+func RunDefaultContainerAndStopOnCleanup(ctx context.Context, t *testing.T) (*WireMockContainer, error) {
+	var emptyCustomizers []testcontainers.ContainerCustomizer
+	return RunContainerAndStopOnCleanup(ctx, t, emptyCustomizers...)
+}
+
 func WithMappingFile(id string, filePath string) testcontainers.CustomizeRequestOption {
 	return func(req *testcontainers.GenericContainerRequest) {
 		cfgFile := testcontainers.ContainerFile{
@@ -191,20 +214,3 @@ func addQueryParamsToURL(endpoint string, queryParams map[string]string) (string
 
 	return parsedURL.String(), nil
 }
-
-func RunContainerAndStopOnCleanup(ctx context.Context, t *testing.T, customizers []testcontainers.ContainerCustomizer) (testcontainers.Container, error) {
-	container, err := RunContainer(ctx, customizers...)
-	if err != nil {
-		t.Fatal(err)
-		return nil, err
-	}
-
-	t.Cleanup(func() {
-		if err := container.Terminate(ctx); err != nil {
-			t.Fatalf("failed to terminate container: %s", err)
-		}
-	})
-
-	return container, nil
-}
-

@@ -12,7 +12,7 @@ import (
 )
 
 func TestWireMock(t *testing.T) {
-	// Create Container
+	// Create Container, by deliberately using the RunContainer API
 	ctx := context.Background()
 	container, err := RunContainer(ctx,
 		WithMappingFile("hello", filepath.Join("testdata", "hello-world.json")),
@@ -43,20 +43,13 @@ func TestWireMock(t *testing.T) {
 func TestWireMockWithResource(t *testing.T) {
 	// Create Container
 	ctx := context.Background()
-	container, err := RunContainer(ctx,
+	container, err := RunContainerAndStopOnCleanup(ctx, t,
 		WithMappingFile("hello", filepath.Join("testdata", "hello-world-resource.json")),
 		WithFile("hello-world-resource-response.xml", filepath.Join("testdata", "hello-world-resource-response.xml")),
 	)
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	// Clean up the container after the test is complete
-	t.Cleanup(func() {
-		if err := container.Terminate(ctx); err != nil {
-			t.Fatalf("failed to terminate container: %s", err)
-		}
-	})
 
 	statusCode, out, err := SendHttpGet(container, "/hello-from-file", nil)
 	if err != nil {
@@ -73,19 +66,12 @@ func TestWireMockWithResource(t *testing.T) {
 func TestSendHttpGetWorksWithQueryParamsPassedInArgument(t *testing.T) {
 	// Create Container
 	ctx := context.Background()
-	container, err := RunContainer(ctx,
+	container, err := RunContainerAndStopOnCleanup(ctx, t,
 		WithMappingFile("get", filepath.Join("testdata", "url-with-query-params.json")),
 	)
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	// Clean up the container after the test is complete
-	t.Cleanup(func() {
-		if err := container.Terminate(ctx); err != nil {
-			t.Fatalf("failed to terminate container: %s", err)
-		}
-	})
 
 	statusCode, out, err := SendHttpGet(container, "/get", map[string]string{"query": "test"})
 	if err != nil {
@@ -102,19 +88,12 @@ func TestSendHttpGetWorksWithQueryParamsPassedInArgument(t *testing.T) {
 func TestSendHttpGetWorksWithQueryParamsProvidedInURL(t *testing.T) {
 	// Create Container
 	ctx := context.Background()
-	container, err := RunContainer(ctx,
+	container, err := RunContainerAndStopOnCleanup(ctx, t,
 		WithMappingFile("get", filepath.Join("testdata", "url-with-query-params.json")),
 	)
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	// Clean up the container after the test is complete
-	t.Cleanup(func() {
-		if err := container.Terminate(ctx); err != nil {
-			t.Fatalf("failed to terminate container: %s", err)
-		}
-	})
 
 	statusCode, out, err := SendHttpGet(container, "/get?query=test", nil)
 	if err != nil {
@@ -131,19 +110,12 @@ func TestSendHttpGetWorksWithQueryParamsProvidedInURL(t *testing.T) {
 func TestSendHttpDelete(t *testing.T) {
 	// Create Container
 	ctx := context.Background()
-	container, err := RunContainer(ctx,
+	container, err := RunContainerAndStopOnCleanup(ctx, t,
 		WithMappingFile("delete", filepath.Join("testdata", "204-no-content.json")),
 	)
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	// Clean up the container after the test is complete
-	t.Cleanup(func() {
-		if err := container.Terminate(ctx); err != nil {
-			t.Fatalf("failed to terminate container: %s", err)
-		}
-	})
 
 	statusCode, out, err := SendHttpDelete(container, "/delete")
 	if err != nil {
@@ -160,21 +132,13 @@ func TestSendHttpDelete(t *testing.T) {
 func TestSendHttpPatch(t *testing.T) {
 	// Create Container
 	ctx := context.Background()
-	container, err := RunContainer(ctx,
+	container, err := RunContainerAndStopOnCleanup(ctx, t,
 		WithMappingFile("patch", filepath.Join("testdata", "200-patch.json")),
 		WithFile("sample-model.json", filepath.Join("testdata", "sample-model.json")),
 	)
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	// Clean up the container after the test is complete
-	t.Cleanup(func() {
-		if err := container.Terminate(ctx); err != nil {
-			t.Fatalf("failed to terminate container: %s", err)
-		}
-	})
-
 	var jsonBody = []byte(`{"title":"Buy cheese and bread for breakfast."}`)
 	statusCode, out, err := SendHttpPatch(container, "/patch", bytes.NewBuffer(jsonBody))
 	if err != nil {
@@ -191,20 +155,13 @@ func TestSendHttpPatch(t *testing.T) {
 func TestSendHttpPut(t *testing.T) {
 	// Create Container
 	ctx := context.Background()
-	container, err := RunContainer(ctx,
+	container, err := RunContainerAndStopOnCleanup(ctx, t,
 		WithMappingFile("put", filepath.Join("testdata", "200-put.json")),
 		WithFile("sample-model.json", filepath.Join("testdata", "sample-model.json")),
 	)
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	// Clean up the container after the test is complete
-	t.Cleanup(func() {
-		if err := container.Terminate(ctx); err != nil {
-			t.Fatalf("failed to terminate container: %s", err)
-		}
-	})
 
 	var jsonBody = []byte(`{"title":"Buy cheese and bread for breakfast."}`)
 	statusCode, out, err := SendHttpPut(container, "/put", bytes.NewBuffer(jsonBody))
@@ -222,17 +179,10 @@ func TestSendHttpPut(t *testing.T) {
 func TestWireMockClient(t *testing.T) {
 	// Create Container
 	ctx := context.Background()
-	container, err := RunContainer(ctx)
+	container, err := RunDefaultContainerAndStopOnCleanup(ctx, t)
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	// Clean up the container after the test is complete
-	t.Cleanup(func() {
-		if err := container.Terminate(ctx); err != nil {
-			t.Fatalf("failed to terminate container: %s", err)
-		}
-	})
 
 	// Use the WireMock client to stub a new endpoint manually
 	err = container.Client.StubFor(
@@ -244,7 +194,6 @@ func TestWireMockClient(t *testing.T) {
 					WithStatus(http.StatusOK),
 			),
 	)
-
 	if err != nil {
 		t.Fatal(err)
 	}
