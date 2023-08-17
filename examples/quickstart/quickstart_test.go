@@ -8,23 +8,16 @@ import (
 )
 
 func TestWireMock(t *testing.T) {
-	// Create Container
 	ctx := context.Background()
-	container, err := RunContainer(ctx,
-		WithMappingFile("hello", "hello-world.json"),
-	)
+	mappingFileName := "hello-world.json"
+
+	container, err := RunContainerAndStopOnCleanup(ctx, t, []testcontainers.ContainerCustomizer{
+		WithMappingFile(mappingFileName),
+	})
 	if err != nil {
 		t.Fatal(err)
 	}
 
-	// Clean up the container after the test is complete
-	t.Cleanup(func() {
-		if err := container.Terminate(ctx); err != nil {
-			t.Fatalf("failed to terminate container: %s", err)
-		}
-	})
-
-	// Send a simple HTTP GET request to the mocked API
 	statusCode, out, err := SendHttpGet(container, "/hello", nil)
 	if err != nil {
 		t.Fatal(err, "Failed to get a response")
