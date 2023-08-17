@@ -1,6 +1,6 @@
-# Quick Start - WireMock on Testcontainers Go
+# Example - Using the Go WireMock client
 
-See the [Quickstart Guide](../../docs/quickstart.md)
+See the [Using the API Client Guide](../../docs/using-api-client.md)
 
 ## Pre-requisites
 
@@ -11,11 +11,7 @@ See the [Quickstart Guide](../../docs/quickstart.md)
 
 ```bash
 git clone https://github.com/wiremock/wiremock-testcontainers-go repository
-cd wiremock-testcontainers-go/examples/quickstart
+cd wiremock-testcontainers-go/examples/using_api_client.md
 go mod download
 go test
 ```
-
-## Sample output
-
-![Quickstart CLI Output](../../docs/images/quickstart.gif)

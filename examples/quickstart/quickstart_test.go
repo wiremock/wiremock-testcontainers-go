@@ -11,9 +11,9 @@ func TestWireMock(t *testing.T) {
 	ctx := context.Background()
 	mappingFileName := "hello-world.json"
 
-	container, err := RunContainerAndStopOnCleanup(ctx, t, []testcontainers.ContainerCustomizer{
+	container, err := RunContainerAndStopOnCleanup(ctx, t,
 		WithMappingFile(mappingFileName),
-	})
+	)
 	if err != nil {
 		t.Fatal(err)
 	}

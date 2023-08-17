@@ -1,4 +1,4 @@
-module wiremock.org/testcontainers-go-quickstart
+module wiremock.org/testcontainers-go-using-api-client
 
 go 1.19
 

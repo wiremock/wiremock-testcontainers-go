@@ -13,17 +13,10 @@ import (
 func TestWireMock(t *testing.T) {
 	// Create Container
 	ctx := context.Background()
-	container, err := RunContainer(ctx)
+	container, err := RunDefaultContainerAndStopOnCleanup(ctx)
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	// Clean up the container after the test is complete
-	t.Cleanup(func() {
-		if err := container.Terminate(ctx); err != nil {
-			t.Fatalf("failed to terminate container: %s", err)
-		}
-	})
 
 	// Use the WireMock client to stub a new endpoint manually
 	err = container.Client.StubFor(
@@ -35,7 +28,6 @@ func TestWireMock(t *testing.T) {
 					WithStatus(http.StatusOK),
 			),
 	)
-
 	if err != nil {
 		t.Fatal(err)
 	}

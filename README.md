@@ -5,18 +5,19 @@
 [![Slack](https://img.shields.io/badge/slack-slack.wiremock.org-brightgreen?style=flat&logo=slack)](https://slack.wiremock.org/)
 [![GitHub contributors](https://img.shields.io/github/contributors/wiremock/wiremock-testcontainers-go)](https://github.com/wiremock/wiremock-testcontainers-go/graphs/contributors)
 
-This module allows provisioning the [WireMock API mock server](https://wiremock.org/) as a standalone container within your unit tests,
+This module allows provisioning the [WireMock API mock server](https://wiremock.org/?utm_medium=referral&utm_campaign=wiremock-testcontainers) as a standalone container within your unit tests,
 based on the official [WireMock Docker](https://github.com/wiremock/wiremock-docker) images (`2.35.0-1` or above) or compatible custom images.
 
-You can learn more about WireMock and Golang on this [WireMock solutions page](https://wiremock.org/docs/solutions/golang/).
+You can learn more about WireMock and Golang on this [WireMock solutions page](https://wiremock.org/docs/solutions/golang/?utm_medium=referral&utm_campaign=wiremock-testcontainers).
 
 ## Supported features
 
 The following features are now explicitly included in the module's API:
 
-- Passing API Mapping files
-- Passing Resource files
+- Passing API Mapping and Resource files
 - Sending HTTP requests to the mocked container
+- Embedded [Go WireMock](https://github.com/wiremock/go-wiremock/) client
+  for interacting with the WireMock container REST API
 
 More features will be added over time.
 
@@ -45,19 +46,12 @@ import (
 func TestWireMock(t *testing.T) {
 	// Create Container
 	ctx := context.Background()
-	container, err := RunContainer(ctx,
+	container, err := RunContainerAndStopOnCleanup(ctx,
 		WithMappingFile("hello", "hello-world.json"),
 	)
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	// Clean up the container after the test is complete
-	t.Cleanup(func() {
-		if err := container.Terminate(ctx); err != nil {
-			t.Fatalf("failed to terminate container: %s", err)
-		}
-	})
 
 	// Send the HTTP GET request to the mocked API
 	statusCode, out, err := SendHttpGet(container, "/hello", nil)
@@ -76,13 +70,18 @@ func TestWireMock(t *testing.T) {
 }
 ```
 
+## Examples
+
+- [Quick Start Guide](./docs/quickstart.md) - [sources](./examples/quickstart/)
+- [Using the REST API Client](./examples/using_api_client/)
+
 ## License
 
 The module is licensed under [Apache License v.2](./LICENSE)
 
 ## References
 
-- [WireMock Website](https://wiremock.org/)
-- [WireMock and Golang Solutions page](https://wiremock.org/docs/solutions/golang/)
+- [WireMock Website](https://wiremock.org/?utm_medium=referral&utm_campaign=wiremock-testcontainers)
+- [WireMock and Golang Solutions page](https://wiremock.org/docs/solutions/golang/?utm_medium=referral&utm_campaign=wiremock-testcontainers)
 - [Testcontainers for Go](https://golang.testcontainers.org/)
 - [WireMock Module page on the Testcontainers marketplace](https://testcontainers.com/modules/wiremock/)

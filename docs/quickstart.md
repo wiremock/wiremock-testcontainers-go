@@ -74,19 +74,12 @@ In `func TestWireMock(t *testing.T)`, add the following code:
 ```go
 // Create Container
 ctx := context.Background()
-container, err := RunContainer(ctx,
+container, err := RunDefaultContainerAndStopOnCleanup(ctx,
     WithMappingFile("hello", "hello-world.json"),
 )
 if err != nil {
     t.Fatal(err)
 }
-
-// Clean up the container after the test is complete
-t.Cleanup(func() {
-    if err := container.Terminate(ctx); err != nil {
-        t.Fatalf("failed to terminate container: %s", err)
-    }
-})
 ```
 
 ## Add logic to send a request
