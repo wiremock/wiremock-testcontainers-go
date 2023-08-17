@@ -14,9 +14,10 @@ You can learn more about WireMock and Golang on this [WireMock solutions page](h
 
 The following features are now explicitly included in the module's API:
 
-- Passing API Mapping files
-- Passing Resource files
+- Passing API Mapping and Resource files
 - Sending HTTP requests to the mocked container
+- Embedded [Go WireMock](https://github.com/wiremock/go-wiremock/) client
+  for interacting with the WireMock container REST API
 
 More features will be added over time.
 
@@ -45,19 +46,12 @@ import (
 func TestWireMock(t *testing.T) {
 	// Create Container
 	ctx := context.Background()
-	container, err := RunContainer(ctx,
+	container, err := RunContainerAndStopOnCleanup(ctx,
 		WithMappingFile("hello", "hello-world.json"),
 	)
 	if err != nil {
 		t.Fatal(err)
 	}
-
-	// Clean up the container after the test is complete
-	t.Cleanup(func() {
-		if err := container.Terminate(ctx); err != nil {
-			t.Fatalf("failed to terminate container: %s", err)
-		}
-	})
 
 	// Send the HTTP GET request to the mocked API
 	statusCode, out, err := SendHttpGet(container, "/hello", nil)
@@ -75,6 +69,11 @@ func TestWireMock(t *testing.T) {
 	}
 }
 ```
+
+## Examples
+
+- [Quick Start Guide](./docs/quickstart.md) - [sources](./examples/quickstart/)
+- [Using the REST API Client](./examples/using_api_client/)
 
 ## License
 
