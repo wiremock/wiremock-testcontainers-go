@@ -4,7 +4,7 @@ See the [Quickstart Guide](../../docs/quickstart.md)
 
 ## Pre-requisites
 
-- Go 1.19 or above
+- Go 1.20 or above
 - Docker-API compatible container runtime ([more info](https://golang.testcontainers.org/system_requirements/docker/))
 
 ## TL;DR
