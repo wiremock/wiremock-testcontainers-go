@@ -74,7 +74,7 @@ In `func TestWireMock(t *testing.T)`, add the following code:
 ```go
 // Create Container
 ctx := context.Background()
-container, err := RunDefaultContainerAndStopOnCleanup(ctx,
+container, err := RunContainerAndStopOnCleanup(ctx, t,
     WithMappingFile("hello", "hello-world.json"),
 )
 if err != nil {
