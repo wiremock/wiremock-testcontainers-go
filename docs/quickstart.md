@@ -9,7 +9,7 @@ Any pull requests will be welcome!
 
 ## Pre-requisites
 
-- Go 1.19 or above
+- Go 1.20 or above
 - Docker-API compatible container runtime ([more info](https://golang.testcontainers.org/system_requirements/docker/))
 
 ## Create test project
@@ -19,11 +19,11 @@ Create the `go.mod` file with the following content:
 ```go
 module wiremock.org/testcontainers-go-quickstart
 
-go 1.19
+go 1.20
 
 require (
     github.com/pkg/errors v0.9.1
-    github.com/wiremock/wiremock-testcontainers-go v1.0.0-alpha-5
+    github.com/wiremock/wiremock-testcontainers-go v1.0.0-alpha-7
 )
 ```
 
