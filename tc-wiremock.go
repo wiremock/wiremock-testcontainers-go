@@ -91,7 +91,7 @@ func RunDefaultContainerAndStopOnCleanup(ctx context.Context, t *testing.T) (*Wi
 }
 
 func WithMappingFile(id string, filePath string) testcontainers.CustomizeRequestOption {
-	return func(req *testcontainers.GenericContainerRequest) {
+	return func(req *testcontainers.GenericContainerRequest) error {
 		cfgFile := testcontainers.ContainerFile{
 			HostFilePath:      filePath,
 			ContainerFilePath: filepath.Join("/home/wiremock/mappings", id+".json"),
@@ -99,12 +99,14 @@ func WithMappingFile(id string, filePath string) testcontainers.CustomizeRequest
 		}
 
 		req.Files = append(req.Files, cfgFile)
+
+		return nil
 	}
 
 }
 
 func WithFile(name string, filePath string) testcontainers.CustomizeRequestOption {
-	return func(req *testcontainers.GenericContainerRequest) {
+	return func(req *testcontainers.GenericContainerRequest) error {
 		cfgFile := testcontainers.ContainerFile{
 			HostFilePath:      filePath,
 			ContainerFilePath: "/home/wiremock/__files/" + name,
@@ -112,12 +114,16 @@ func WithFile(name string, filePath string) testcontainers.CustomizeRequestOptio
 		}
 
 		req.Files = append(req.Files, cfgFile)
+
+		return nil
 	}
 }
 
 func WithImage(image string) testcontainers.CustomizeRequestOption {
-	return func(req *testcontainers.GenericContainerRequest) {
+	return func(req *testcontainers.GenericContainerRequest) error {
 		req.Image = image
+
+		return nil
 	}
 }
 
