@@ -143,7 +143,7 @@ func GetURI(ctx context.Context, container testcontainers.Container) (string, er
 
 // SendHttpGet sends Http GET request to the container passed as an argument.
 // 'queryParams' parameter is optional and can be passed as a nil. Query parameters also work when hardcoded in the endpoint argument.
-func SendHttpGet(container testcontainers.Container, endpoint string, queryParams map[string][]string) (int, string, error) {
+func SendHttpGet(container testcontainers.Container, endpoint string, queryParams map[string]string) (int, string, error) {
 	if queryParams != nil {
 		var err error
 		endpoint, err = addQueryParamsToURL(endpoint, queryParams)
@@ -163,11 +163,6 @@ func SendHttpDelete(container testcontainers.Container, endpoint string) (int, s
 // SendHttpPost sends Http POST request to the container passed as an argument.
 func SendHttpPost(container testcontainers.Container, endpoint string, body io.Reader) (int, string, error) {
 	return sendHttpRequest(http.MethodPost, container, endpoint, body, nil)
-}
-
-// SendHttpFormPost sends Http POST request with form data to the container passed as an argument.
-func SendHttpFormPost(container testcontainers.Container, endpoint string, body io.Reader) (int, string, error) {
-	return sendHttpRequest(http.MethodPost, container, endpoint, body, map[string]string{"Content-Type": "application/x-www-form-urlencoded"})
 }
 
 // SendHttpPatch sends Http PATCH request to the container passed as an argument.
@@ -210,7 +205,7 @@ func sendHttpRequest(httpMethod string, container testcontainers.Container, endp
 	return res.StatusCode, string(out), nil
 }
 
-func addQueryParamsToURL(endpoint string, queryParams map[string][]string) (string, error) {
+func addQueryParamsToURL(endpoint string, queryParams map[string]string) (string, error) {
 	parsedURL, err := url.Parse(endpoint)
 	if err != nil {
 		return "", err
@@ -222,9 +217,7 @@ func addQueryParamsToURL(endpoint string, queryParams map[string][]string) (stri
 	}
 
 	for key, value := range queryParams {
-		for _, v := range value {
-			existingQueryParams.Add(key, v)
-		}
+		existingQueryParams.Set(key, value)
 	}
 
 	parsedURL.RawQuery = existingQueryParams.Encode()

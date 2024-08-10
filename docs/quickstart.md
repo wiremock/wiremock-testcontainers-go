@@ -115,7 +115,7 @@ func TestWireMock(t *testing.T) {
 }
 ```
 
-In the code above, we used the `SendHttpGet` method to send a HTTP GET request. The library also offers methods to send requests with other HTTP methods, i.e. `SendHttpPost`, `SendHttpDelete`,`SendHttpPatch`, `SendHttpPut`, `SendHttpFormPost`.
+In the code above, we used the `SendHttpGet` method to send a HTTP GET request. The library also offers methods to send requests with other HTTP methods, i.e. `SendHttpPost`, `SendHttpDelete`,`SendHttpPatch`, `SendHttpPut`.
 
 ## Verify the response
 

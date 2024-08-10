@@ -3,6 +3,7 @@ package testcontainers_wiremock
 import (
 	"bytes"
 	"context"
+	"io"
 	"net/http"
 	"net/url"
 	"path/filepath"
@@ -56,7 +57,7 @@ func TestV3SendHttpGetWorksWithQueryParamsPassedInArgument(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	statusCode, out, err := SendHttpGet(container, "/get", map[string][]string{"query": []string{"test"}})
+	statusCode, out, err := SendHttpGet(container, "/get", map[string]string{"query": "test"})
 	if err != nil {
 		t.Fatal(err, "Failed to get a response")
 	}
@@ -244,9 +245,21 @@ func TestV3FormParameters(t *testing.T) {
 		}
 	})
 
+	endpoint, err := GetURI(ctx, container)
+	if err != nil {
+		t.Fatal(err)
+	}
+
 	form := url.Values{}
 	form.Add("tool", "WireMock")
-	statusCode, _, err := SendHttpFormPost(container, "/install-tool", strings.NewReader(form.Encode()))
+	req, err := http.NewRequestWithContext(ctx, "POST", endpoint+"/install-tool", strings.NewReader(form.Encode()))
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	req.Header.Add("Content-Type", "application/x-www-form-urlencoded")
+
+	statusCode, _, err := sendTestRequest(t, req)
 	if err != nil {
 		t.Fatal(err, "Failed to get a response")
 	}
@@ -309,7 +322,7 @@ func TestV3MultipQueryValues(t *testing.T) {
 		}
 	})
 
-	statusCode, _, err := SendHttpGet(container, "/things", map[string][]string{"id": []string{"1", "2", "3"}})
+	statusCode, _, err := SendHttpGet(container, "/things?id=1&id=2&id=3", nil)
 	if err != nil {
 		t.Fatal(err, "Failed to get a response")
 	}
@@ -383,4 +396,19 @@ func TestV3Faker(t *testing.T) {
 	if randomNumber < 1 || randomNumber > 9 {
 		t.Fatalf("expected number between 1-9 but got %s", out)
 	}
+}
+
+func sendTestRequest(t *testing.T, req *http.Request) (int, string, error) {
+	resp, err := http.DefaultClient.Do(req)
+	if err != nil {
+		return 0, "", err
+	}
+	defer resp.Body.Close()
+
+	out, err := io.ReadAll(resp.Body)
+	if err != nil {
+		return -1, "", err
+	}
+
+	return resp.StatusCode, string(out), nil
 }
