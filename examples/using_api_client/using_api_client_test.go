@@ -13,7 +13,7 @@ import (
 func TestWireMock(t *testing.T) {
 	// Create Container
 	ctx := context.Background()
-	container, err := RunDefaultContainerAndStopOnCleanup(ctx)
+	container, err := RunDefaultContainerAndStopOnCleanup(ctx, t)
 	if err != nil {
 		t.Fatal(err)
 	}
