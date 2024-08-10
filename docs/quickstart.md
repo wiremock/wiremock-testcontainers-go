@@ -71,10 +71,24 @@ Create the `hello-world.json` file with the following content:
 
 In `func TestWireMock(t *testing.T)`, add the following code:
 
+### wiremock v2
 ```go
 // Create Container
 ctx := context.Background()
 container, err := RunContainerAndStopOnCleanup(ctx, t,
+    WithMappingFile("hello", "hello-world.json"),
+)
+if err != nil {
+    t.Fatal(err)
+}
+```
+
+### wiremock v3
+```go
+// Create Container
+ctx := context.Background()
+container, err := RunContainerAndStopOnCleanup(ctx, t,
+    WithImage("docker.io/wiremock/wiremock:3.9.1"),
     WithMappingFile("hello", "hello-world.json"),
 )
 if err != nil {

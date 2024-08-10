@@ -47,6 +47,7 @@ func TestWireMock(t *testing.T) {
 	// Create Container
 	ctx := context.Background()
 	container, err := RunContainerAndStopOnCleanup(ctx,
+		// WithImage("docker.io/wiremock/wiremock:3.9.1"), if requires v3
 		WithMappingFile("hello", "hello-world.json"),
 	)
 	if err != nil {
