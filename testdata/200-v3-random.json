@@ -1,0 +1,11 @@
+{
+    "request": {
+        "urlPath": "/random",
+        "method": "GET"
+    },
+    "response": {
+        "status": 200,
+        "transformers" : [ "response-template" ],
+        "body": "{{ randomInt lower=1 upper=9 }}"
+    }
+}

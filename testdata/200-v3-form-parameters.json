@@ -1,0 +1,16 @@
+{
+    "request": {
+      "method": "POST",
+      "url": "/install-tool",
+      "formParameters": {
+        "tool": {
+            "equalTo": "WireMock"
+        }
+      }
+    },
+
+    "response": {
+      "status": 200
+    }
+  }
+  

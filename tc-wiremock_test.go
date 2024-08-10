@@ -73,7 +73,7 @@ func TestSendHttpGetWorksWithQueryParamsPassedInArgument(t *testing.T) {
 		t.Fatal(err)
 	}
 
-	statusCode, out, err := SendHttpGet(container, "/get", map[string]string{"query": "test"})
+	statusCode, out, err := SendHttpGet(container, "/get", map[string][]string{"query": []string{"test"}})
 	if err != nil {
 		t.Fatal(err, "Failed to get a response")
 	}

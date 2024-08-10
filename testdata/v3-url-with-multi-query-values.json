@@ -1,0 +1,24 @@
+{
+    "request" : {
+      "urlPath" : "/things",
+      "method" : "GET",
+      "queryParameters" : {
+        "id" : {
+          "hasExactly" : [
+            {
+              "equalTo": "1"
+            },
+            {
+              "equalTo": "2"
+            },
+            {
+              "equalTo": "3"
+            }
+          ]
+        }
+      }
+    },
+    "response" : {
+      "status" : 200
+    }
+}
