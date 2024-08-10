@@ -398,7 +398,47 @@ func TestV3Faker(t *testing.T) {
 	}
 }
 
+func TestV3Auth(t *testing.T) {
+	ctx := context.Background()
+	container, err := RunContainer(ctx,
+		WithImage(defaultV3WireMockImage),
+		WithMappingFile("v3", filepath.Join("testdata", "200-v3-basic-auth.json")),
+	)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	// Clean up the container after the test is complete
+	t.Cleanup(func() {
+		if err := container.Terminate(ctx); err != nil {
+			t.Fatalf("failed to terminate container: %s", err)
+		}
+	})
+
+	endpoint, err := GetURI(ctx, container)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	req, err := http.NewRequestWithContext(ctx, "GET", endpoint+"/basic-auth", nil)
+	if err != nil {
+		t.Fatal(err)
+	}
+
+	req.SetBasicAuth("user", "pass")
+
+	statusCode, _, err := sendTestRequest(t, req)
+	if err != nil {
+		t.Fatal(err, "Failed to get a response")
+	}
+	if statusCode != 200 {
+		t.Fatalf("expected HTTP-200 but got %d", statusCode)
+	}
+}
+
 func sendTestRequest(t *testing.T, req *http.Request) (int, string, error) {
+	t.Helper()
+
 	resp, err := http.DefaultClient.Do(req)
 	if err != nil {
 		return 0, "", err

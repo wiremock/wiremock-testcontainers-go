@@ -1,0 +1,13 @@
+{
+    "request": {
+        "method": "GET",
+        "url": "/basic-auth",
+        "basicAuth": {
+            "username": "user",
+            "password": "pass"
+        }
+    },
+    "response": {
+        "status": 200
+    }
+}
