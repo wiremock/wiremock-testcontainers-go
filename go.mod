@@ -1,6 +1,8 @@
 module github.com/wiremock/wiremock-testcontainers-go
 
-go 1.20
+go 1.21
+
+toolchain go1.22.6
 
 require (
 	github.com/docker/go-connections v0.5.0
