@@ -2,8 +2,6 @@ module wiremock.org/testcontainers-go-quickstart
 
 go 1.21
 
-toolchain go1.22.6
-
 require github.com/wiremock/wiremock-testcontainers-go v1.0.0-alpha-7
 
 require (
