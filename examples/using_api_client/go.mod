@@ -2,8 +2,6 @@ module wiremock.org/testcontainers-go-using-api-client
 
 go 1.21
 
-toolchain go1.22.6
-
 require (
 	github.com/wiremock/go-wiremock v1.8.0
 	github.com/wiremock/wiremock-testcontainers-go v1.0.0-alpha-7
