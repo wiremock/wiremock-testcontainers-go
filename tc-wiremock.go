@@ -5,7 +5,6 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"path/filepath"
 	"testing"
 
 	"github.com/docker/go-connections/nat"
