@@ -31,7 +31,9 @@ Just a teaser of how it feels at the real speed!
 ## Requirements
 
 - Golang version 1.17 or above, so all modern Golang projects should be compatible with it.
-- The module supports the official [WireMock Docker](https://github.com/wiremock/wiremock-docker) images 2.35.0-1 or above.
+- The module supports the official [WireMock Docker](https://github.com/wiremock/wiremock-docker) images 
+  - for v2 - 2.35.0-1 or above
+  - for v3 - 3.9.1 or above (check Usage section on how to use v3)
 - Custom images are supported too as long as they follow the same CLI and API structure.
 
 ## Usage
@@ -47,6 +49,7 @@ func TestWireMock(t *testing.T) {
 	// Create Container
 	ctx := context.Background()
 	container, err := RunContainerAndStopOnCleanup(ctx,
+		// WithImage("docker.io/wiremock/wiremock:3.9.1"), for v3
 		WithMappingFile("hello", "hello-world.json"),
 	)
 	if err != nil {

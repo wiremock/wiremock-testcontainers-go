@@ -5,7 +5,6 @@ import (
 	"io"
 	"net/http"
 	"net/url"
-	"path/filepath"
 	"testing"
 
 	"github.com/docker/go-connections/nat"
@@ -152,30 +151,30 @@ func SendHttpGet(container testcontainers.Container, endpoint string, queryParam
 		}
 	}
 
-	return sendHttpRequest(http.MethodGet, container, endpoint, nil)
+	return sendHttpRequest(http.MethodGet, container, endpoint, nil, nil)
 }
 
 // SendHttpDelete sends Http DELETE request to the container passed as an argument.
 func SendHttpDelete(container testcontainers.Container, endpoint string) (int, string, error) {
-	return sendHttpRequest(http.MethodDelete, container, endpoint, nil)
+	return sendHttpRequest(http.MethodDelete, container, endpoint, nil, nil)
 }
 
 // SendHttpPost sends Http POST request to the container passed as an argument.
 func SendHttpPost(container testcontainers.Container, endpoint string, body io.Reader) (int, string, error) {
-	return sendHttpRequest(http.MethodPost, container, endpoint, body)
+	return sendHttpRequest(http.MethodPost, container, endpoint, body, nil)
 }
 
 // SendHttpPatch sends Http PATCH request to the container passed as an argument.
 func SendHttpPatch(container testcontainers.Container, endpoint string, body io.Reader) (int, string, error) {
-	return sendHttpRequest(http.MethodPatch, container, endpoint, body)
+	return sendHttpRequest(http.MethodPatch, container, endpoint, body, nil)
 }
 
 // SendHttpPut sends Http PUT request to the container passed as an argument.
 func SendHttpPut(container testcontainers.Container, endpoint string, body io.Reader) (int, string, error) {
-	return sendHttpRequest(http.MethodPut, container, endpoint, body)
+	return sendHttpRequest(http.MethodPut, container, endpoint, body, nil)
 }
 
-func sendHttpRequest(httpMethod string, container testcontainers.Container, endpoint string, body io.Reader) (int, string, error) {
+func sendHttpRequest(httpMethod string, container testcontainers.Container, endpoint string, body io.Reader, headers map[string]string) (int, string, error) {
 	ctx := context.Background()
 
 	uri, err := GetURI(ctx, container)
@@ -186,6 +185,10 @@ func sendHttpRequest(httpMethod string, container testcontainers.Container, endp
 	req, err := http.NewRequest(httpMethod, uri+endpoint, body)
 	if err != nil {
 		return -1, "", err
+	}
+
+	for key, value := range headers {
+		req.Header.Set(key, value)
 	}
 
 	res, err := http.DefaultClient.Do(req)
