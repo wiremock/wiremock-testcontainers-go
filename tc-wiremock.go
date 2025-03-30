@@ -94,7 +94,7 @@ func WithMappingFile(id string, filePath string) testcontainers.CustomizeRequest
 	return func(req *testcontainers.GenericContainerRequest) error {
 		cfgFile := testcontainers.ContainerFile{
 			HostFilePath:      filePath,
-			ContainerFilePath: filepath.Join("/home/wiremock/mappings", id+".json"),
+			ContainerFilePath: "/home/wiremock/mappings/" + id + ".json",
 			FileMode:          0755,
 		}
 
