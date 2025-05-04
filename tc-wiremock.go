@@ -67,7 +67,7 @@ func RunContainer(ctx context.Context, opts ...testcontainers.ContainerCustomize
 }
 
 // Creates an instance of the WireMockContainer type that is automatically terminated upon test completion
-func RunContainerAndStopOnCleanup(ctx context.Context, t *testing.T, opts ...testcontainers.ContainerCustomizer) (*WireMockContainer, error) {
+func RunContainerAndStopOnCleanup(ctx context.Context, t testing.TB, opts ...testcontainers.ContainerCustomizer) (*WireMockContainer, error) {
 	container, err := RunContainer(ctx, opts...)
 	if err != nil {
 		t.Fatal(err)
@@ -84,7 +84,7 @@ func RunContainerAndStopOnCleanup(ctx context.Context, t *testing.T, opts ...tes
 }
 
 // Creates a default instance of the WireMockContainer type that is automatically terminated upon test completion
-func RunDefaultContainerAndStopOnCleanup(ctx context.Context, t *testing.T) (*WireMockContainer, error) {
+func RunDefaultContainerAndStopOnCleanup(ctx context.Context, t testing.TB) (*WireMockContainer, error) {
 	var emptyCustomizers []testcontainers.ContainerCustomizer
 	return RunContainerAndStopOnCleanup(ctx, t, emptyCustomizers...)
 }
