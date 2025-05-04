@@ -436,7 +436,7 @@ func TestV3Auth(t *testing.T) {
 	}
 }
 
-func sendTestRequest(t *testing.T, req *http.Request) (int, string, error) {
+func sendTestRequest(t testing.TB, req *http.Request) (int, string, error) {
 	t.Helper()
 
 	resp, err := http.DefaultClient.Do(req)
