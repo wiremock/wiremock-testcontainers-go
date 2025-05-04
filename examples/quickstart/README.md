@@ -13,7 +13,7 @@ See the [Quickstart Guide](../../docs/quickstart.md)
 git clone https://github.com/wiremock/wiremock-testcontainers-go repository
 cd wiremock-testcontainers-go/examples/quickstart
 go mod download
-go test
+go test -v
 ```
 
 ## Sample output

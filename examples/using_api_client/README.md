@@ -13,5 +13,5 @@ See the [Using the API Client Guide](../../docs/using-api-client.md)
 git clone https://github.com/wiremock/wiremock-testcontainers-go repository
 cd wiremock-testcontainers-go/examples/using_api_client.md
 go mod download
-go test
+go test -v
 ```
