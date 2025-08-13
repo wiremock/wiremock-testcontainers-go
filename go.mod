@@ -7,7 +7,7 @@ toolchain go1.23.7
 require (
 	github.com/docker/go-connections v0.6.0
 	github.com/testcontainers/testcontainers-go v0.38.0
-	github.com/wiremock/go-wiremock v1.11.0
+	github.com/wiremock/go-wiremock v1.13.0
 )
 
 require (
