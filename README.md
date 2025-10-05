@@ -82,6 +82,10 @@ func TestWireMock(t *testing.T) {
 
 The module is licensed under [Apache License v.2](./LICENSE)
 
+## Contributing
+
+See the [Contributor Guide](./docs/CONTRIBUTING.md)
+
 ## References
 
 - [WireMock Website](https://wiremock.org/?utm_medium=referral&utm_campaign=wiremock-testcontainers)
