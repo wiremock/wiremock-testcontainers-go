@@ -10,10 +10,10 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
-      # perform matrix testing to give us an earlier insight into issues with different versions of supported major versions of Go
       matrix:
         version:
-          - "1.23"
+          - "1.25"
+          # Minimum version, aligned with the Testcontainers lib
           - "1.24"
     steps:
     - uses: actions/checkout@v5
