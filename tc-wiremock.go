@@ -7,7 +7,6 @@ import (
 	"net/url"
 	"testing"
 
-	"github.com/docker/go-connections/nat"
 	"github.com/testcontainers/testcontainers-go"
 	"github.com/testcontainers/testcontainers-go/wait"
 	"github.com/wiremock/go-wiremock"
@@ -36,7 +35,7 @@ func RunContainer(ctx context.Context, opts ...testcontainers.ContainerCustomize
 		Image:        defaultWireMockImage + ":" + defaultWireMockVersion,
 		ExposedPorts: []string{defaultPort + "/tcp"},
 		Cmd:          []string{""},
-		WaitingFor:   wait.ForHTTP("/__admin").WithPort(nat.Port(defaultPort)),
+		WaitingFor:   wait.ForHTTP("/__admin").WithPort(defaultPort),
 	}
 
 	genericContainerReq := testcontainers.GenericContainerRequest{
@@ -132,7 +131,7 @@ func GetURI(ctx context.Context, container testcontainers.Container) (string, er
 		return "", err
 	}
 
-	mappedPort, err := container.MappedPort(ctx, nat.Port(defaultPort))
+	mappedPort, err := container.MappedPort(ctx, defaultPort)
 	if err != nil {
 		return "", err
 	}
