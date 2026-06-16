@@ -30,7 +30,7 @@ Just a teaser of how it feels at the real speed!
 
 ## Requirements
 
-- Golang version 1.17 or above, so all modern Golang projects should be compatible with it.
+- Golang version 1.25 or above, so all modern Golang projects should be compatible with it.
 - The module supports the official [WireMock Docker](https://github.com/wiremock/wiremock-docker) images 
   - for v2 - 2.35.0-1 or above
   - for v3 - 3.9.1 or above (check Usage section on how to use v3)
